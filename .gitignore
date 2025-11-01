@@ -471,3 +471,7 @@ composer.lock
 *.css.map
 *.sass.map
 *.scss.map
+.idea/modules.xml
+.idea/Desarrollo-Web-Entorno-Servidor.iml
+.idea/php.xml
+.idea/vcs.xml
