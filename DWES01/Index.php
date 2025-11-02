@@ -13,9 +13,17 @@
         return false;
     }
 
+
     $message="";
     $messageColor="";
 
+    if(isset($_GET["limpiar"])&&$_GET["limpiar"]=="1"){
+        foreach($_SESSION["contacts"] as $contact=>$phone){
+            unset($_SESSION["contacts"][$contact]);
+        }
+        $message = "All contacts have been removed";
+        $messageColor="green";
+    }
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         $name=trim($_POST["name"]);
         if(strlen($name)==0){
@@ -42,6 +50,8 @@
             }
         }
     }
+
+
 ?>
 
 <!DOCTYPE>
@@ -64,25 +74,33 @@
                         <tr>
                             <td><?=htmlspecialchars($contact)?></td>
                             <td><?=htmlspecialchars($phone)?></td>
-                        </tr>
-                    <?php endforeach;?>
-                </table>
+                        </tr><?php endforeach;?>
             <?php else:?>
-                <p>No contacts.</p>
+                <h4>There are no contacts</h4>
             <?php endif;?>
+                </table>
         </div>
+        <br>
         <div class="form">
             <form action="<?php echo $_SERVER["PHP_SELF"];?>" method="post">
                 <label for="name">Name</label> <input type="text" name="name" id="name">
-                <br>
                 <label for="phone">Phone</label> <input type="tel" name="phone" id="phone">
-                <br>
                 <input type="submit" name="submit" value="Send">
-                <br>
-                <p style="color: <?=$messageColor?>">
-                    <?=htmlspecialchars($message)?>
-                </p>
             </form>
+        </div>
+        <div class="warnings">
+            <p style="color: <?=$messageColor?>">
+                <?=htmlspecialchars($message)?>
+            </p>
+        </div>
+        <br>
+        <div>
+            <?php if(count($_SESSION["contacts"])>0):?>
+                <form method="get" action="">
+                    <input type="hidden" name="limpiar" value="1">
+                    <button type="submit">Delete all contacts</button>
+                </form>
+            <?php endif;?>
         </div>
     </body>
 </html>
